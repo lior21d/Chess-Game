@@ -24,6 +24,12 @@
     <ClCompile Include="..\..\..\Chess\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Piece.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Piece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Chess\Board.h">

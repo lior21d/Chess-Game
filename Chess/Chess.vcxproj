@@ -22,6 +22,8 @@
     <ClCompile Include="..\..\..\Chess\Board.cpp" />
     <ClCompile Include="..\..\..\Chess\main.cpp" />
     <ClCompile Include="..\..\..\Chess\Window.cpp" />
+    <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Piece.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Chess\Board.h" />
