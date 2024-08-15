@@ -22,12 +22,16 @@
     <ClCompile Include="..\..\..\Chess\Board.cpp" />
     <ClCompile Include="..\..\..\Chess\main.cpp" />
     <ClCompile Include="..\..\..\Chess\Window.cpp" />
+    <ClCompile Include="Knight.cpp" />
+    <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Piece.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Chess\Board.h" />
     <ClInclude Include="..\..\..\Chess\Window.h" />
+    <ClInclude Include="Knight.h" />
+    <ClInclude Include="Pawn.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
