@@ -1,6 +1,6 @@
 #pragma once
-#ifndef TEXTUREMANAGER_H
-#define TEXTUREMANAGER_H
+#ifndef TEXTUREMANAGER_H // TEXTUREMANAGER_H
+#define TEXTUREMANAGER_H // TEXTUREMANAGER_H
 
 #include <SFML/Graphics.hpp>
 #include <string>
