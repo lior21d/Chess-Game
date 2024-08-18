@@ -4,7 +4,7 @@
 
 #include "Piece.h"
 
-class Queen : Piece
+class Queen : public Piece
 {
 public:
 	// Constructor

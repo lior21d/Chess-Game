@@ -1,4 +1,4 @@
- #include "Pawn.h"
+#include "Pawn.h"
 
 // Constructor
 Pawn::Pawn(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture)

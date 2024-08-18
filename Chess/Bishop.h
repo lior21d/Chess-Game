@@ -4,9 +4,10 @@
 
 #include "Piece.h"
 
-class Bishop : Piece
+class Bishop : public Piece
 {
-	// Constructor 
+public:
+	// Constructor
 	Bishop(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture);
 
 	// Destructor
@@ -18,4 +19,7 @@ class Bishop : Piece
 
 };
 
+
 #endif // BISHOP_H
+
+

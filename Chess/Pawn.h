@@ -4,7 +4,7 @@
 
 #include "Piece.h"
 
-class Pawn : Piece
+class Pawn : public Piece
 {
 public:
 	// Constructor

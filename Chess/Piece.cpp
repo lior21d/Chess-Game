@@ -1,11 +1,18 @@
 #include "Piece.h"
+#include <iostream>
 
 // Constructor
 Piece::Piece(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture)
 	: color(color), position(position), texture(texture) {
-	sprite.setTexture(texture); // Set the texture for the piece
-	sprite.setPosition(position); // Set the initial position for the piece
+	sprite.setTexture(texture);
+	sprite.setPosition(position);
 
+	// Set the sprite to be 100x100
+	sf::Vector2u textureSize = texture.getSize();
+	float scaleFactor = 100.0f / textureSize.x;
+	
+	sprite.setScale(scaleFactor , scaleFactor);
+	
 }
 
 // Set the postion of the piece
