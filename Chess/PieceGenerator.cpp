@@ -41,7 +41,7 @@ std::vector<Piece*> createAllPieces(TextureManager* textureManager) {
 
 	// Creating kings
 	pieces.push_back(new King("black", sf::Vector2f(400, 0), textureManager->getTexture("black_king")));
-	pieces.push_back(new King("white", sf::Vector2f(400, 700), textureManager->getTexture("black_king")));
+	pieces.push_back(new King("white", sf::Vector2f(400, 700), textureManager->getTexture("white_king")));
 	
 	// Creating queens
 	pieces.push_back(new Queen("black", sf::Vector2f(300, 0), textureManager->getTexture("black_queen")));

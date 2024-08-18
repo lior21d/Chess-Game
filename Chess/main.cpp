@@ -36,6 +36,7 @@ int main() {
         for (Piece* piece : pieces) {
             piece->draw(gameWindow->getRenderWindow());
         }
+        
 
         // Display the window
         gameWindow->display();
