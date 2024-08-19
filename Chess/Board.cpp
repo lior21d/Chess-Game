@@ -36,3 +36,14 @@ void Board::draw(sf::RenderWindow& window) {
 		}
 	}
 }
+
+sf::Vector2f Board::getClosestSquareCenter(const sf::Vector2f& position) const {
+	int col = static_cast<int>(position.x / squareSize);
+	int row = static_cast<int>(position.y / squareSize);
+
+	// Calculate the center of the closest square
+	float centerX = col * squareSize + squareSize / 2.0f;
+	float centerY = row * squareSize + squareSize / 2.0f;
+
+	return sf::Vector2f(centerX, centerY);
+}

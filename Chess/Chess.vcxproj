@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Chess\Board.cpp" />
-    <ClCompile Include="..\..\..\Chess\Window.cpp" />
     <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="King.cpp" />
     <ClCompile Include="Knight.cpp" />
@@ -32,10 +31,10 @@
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="Rook.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Chess\Board.h" />
-    <ClInclude Include="..\..\..\Chess\Window.h" />
     <ClInclude Include="Bishop.h" />
     <ClInclude Include="King.h" />
     <ClInclude Include="Knight.h" />
@@ -44,6 +43,7 @@
     <ClInclude Include="Queen.h" />
     <ClInclude Include="Rook.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

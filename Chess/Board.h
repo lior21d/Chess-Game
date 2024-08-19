@@ -12,7 +12,8 @@ private:
 public:
 	Board(int squareSize);
 	void draw(sf::RenderWindow& window);
-
+	// Method to get the closest square's center position based on a given position
+	sf::Vector2f getClosestSquareCenter(const sf::Vector2f& position) const;
 };
 
 

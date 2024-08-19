@@ -35,6 +35,7 @@ public:
 	
 	std::string getColor() const;
 
+	const sf::Sprite& getSprite() const;
 
 };
 

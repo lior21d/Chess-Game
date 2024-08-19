@@ -2,6 +2,8 @@
 #define WINDOW_H
 
 #include <SFML/Graphics.hpp>
+#include "Piece.h"
+#include "Board.h"
 
 class Window {
 public:
@@ -11,7 +13,7 @@ public:
     void clear();
     void display();
     bool isOpen();
-    void handleEvents();
+    void handleEvents(std::vector<Piece*>& pieces, Board& board);
     sf::RenderWindow& getRenderWindow();
 
 private:

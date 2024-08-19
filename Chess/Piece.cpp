@@ -31,3 +31,8 @@ sf::Vector2f Piece::getPosition() const {
 std::string Piece::getColor() const {
 	return color;
 }
+
+const sf::Sprite& Piece::getSprite() const
+{
+	return sprite;
+}

@@ -24,7 +24,7 @@ int main() {
     // Main loop
     while (gameWindow->isOpen()) {
         // Handle events
-        gameWindow->handleEvents();
+        //gameWindow->handleEvents(pieces, *(chessBoard));
 
         // Clear the window
         gameWindow->clear();
