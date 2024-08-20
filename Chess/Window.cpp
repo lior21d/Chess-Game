@@ -1,6 +1,6 @@
 #include "Window.h"
 
-
+#include "iostream"
 Window::Window(const std::string& title, int width, int height)
     : title(title), width(width), height(height) {}
 
@@ -24,50 +24,68 @@ bool Window::isOpen() {
     return window.isOpen();
 }
 
-void Window::handleEvents(std::vector<Piece*>& pieces, Board& board) {
+
+void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
+{
     sf::Event event;
     static bool isDragging = false;
     static Piece* selectedPiece = nullptr;
-    static sf::Vector2f mouseOffset;
+    static sf::Vector2f originalPos;
 
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
+    while (window.pollEvent(event))
+    {
+        // Closing the window
+        if (event.type == sf::Event::Closed)
+        {
             close();
         }
 
-        else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
-        {
+
+        // Handling piece movement
+        else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-            for (auto& piece : pieces)
             {
-                if (piece->getSprite().getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+                for (auto& piece : pieces)
                 {
-                    selectedPiece = piece;
-                    isDragging = true;
-                    mouseOffset = selectedPiece->getPosition() - static_cast<sf::Vector2f>(mousePos);
-                    break;
+                    if (piece->getSprite().getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                        selectedPiece = piece;
+                        originalPos = selectedPiece->getPosition();
+                        isDragging = true;
+                        
+                    }
                 }
             }
         }
 
-        else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
-        {
+        else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
             isDragging = false;
-            if (selectedPiece)
-            {
-                // Snap
-                sf::Vector2f newPosition = board.getClosestSquareCenter(selectedPiece->getPosition());
-                selectedPiece->setPosition(newPosition);
-                selectedPiece = nullptr;
+            if (selectedPiece) {
+                // Snapping current piece to new square
             }
         }
+
+        // Dragging
         if (isDragging && selectedPiece) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-            selectedPiece->setPosition(static_cast<sf::Vector2f>(mousePos) + mouseOffset);
+            sf::Vector2f newPiecePos = static_cast<sf::Vector2f>(mousePos) - sf::Vector2f(50, 50); // Offset piece because we grab its edge
+            selectedPiece->setPosition(newPiecePos);
+            
         }
 
+        //Snapping
+            if (!isDragging && selectedPiece) {
+               
+                sf::Vector2f newPiecePos = board.getClosestSquare(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
+                
+                if (newPiecePos.x >= 0 && newPiecePos.x <= 800 && newPiecePos.y >= 0 && newPiecePos.y <= 800) { // In bounds
+                    selectedPiece->setPosition(newPiecePos);
+                    selectedPiece = nullptr;
+                }
+                else {
+                    selectedPiece->setPosition(originalPos);
+                }
+        }
     }
-
 }
 
 sf::RenderWindow& Window::getRenderWindow() {

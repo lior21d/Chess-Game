@@ -24,7 +24,7 @@ int main() {
     // Main loop
     while (gameWindow->isOpen()) {
         // Handle events
-        //gameWindow->handleEvents(pieces, *(chessBoard));
+        gameWindow->handleEvents(pieces, *chessBoard);
 
         // Clear the window
         gameWindow->clear();
@@ -36,10 +36,13 @@ int main() {
         for (Piece* piece : pieces) {
             piece->draw(gameWindow->getRenderWindow());
         }
-        
+
 
         // Display the window
         gameWindow->display();
+
+
+
     }
 
 
