@@ -3,6 +3,7 @@
 #define QUEEN_H // QUEEN_H
 
 #include "Piece.h"
+#include "Board.h"
 
 class Queen : public Piece
 {
@@ -15,8 +16,7 @@ public:
 
 	void draw(sf::RenderWindow& window) override;
 
-	bool isValidMove(const sf::Vector2f& newPosition) const override;
-
+	std::vector<sf::Vector2f> getPossibleMoves(Board& board, const std::vector<Piece*>& pieces) override;
 };
 
 #endif // KNIGHT_H

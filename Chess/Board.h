@@ -18,6 +18,7 @@ public:
     // Methods to help game logic
     bool isOpponentPiece(const sf::Vector2f& position, const std::vector<Piece*>& pieces, const std::string& color);
     bool isEmptySquare(const std::vector<Piece*>& pieces, const sf::Vector2f& position);
+    bool isWithinBounds(const sf::Vector2f& position) const;
 private:
     static const int BOARD_SIZE = 8;
     int squareSize;

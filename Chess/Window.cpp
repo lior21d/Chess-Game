@@ -50,7 +50,9 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                         selectedPiece = piece;
                         originalPos = selectedPiece->getPosition();
                         isDragging = true;
-                        // Print out possible move
+                        // Print out possible move, just for debugging sake
+                        std::cout << "Current Position: X:" << selectedPiece->getPosition().x << " Y: " << selectedPiece->getPosition().y << std::endl;
+
                         std::vector<sf::Vector2f> test = selectedPiece->getPossibleMoves(board, pieces);
                         for (auto& vec : test) {
                             std::cout << "X:" << vec.x << " Y:" << vec.y << std::endl;

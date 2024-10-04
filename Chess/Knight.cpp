@@ -11,9 +11,36 @@ void Knight::draw(sf::RenderWindow& window)
 	window.draw(sprite); // Sprite from piece
 }
 
-// Overriden isValidMove function
-bool Knight::isValidMove(const sf::Vector2f& newPosition) const
+std::vector<sf::Vector2f> Knight::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces)
 {
-	// Need to implement logic for moving
-	return true; // Placeholder for now
+	std::vector<sf::Vector2f> possibleMoves;
+	sf::Vector2f currentPosition = this->getPosition();
+
+	sf::Vector2f directions[] = {
+		{ 100, 200 }, { 100, -200 },  // Right moves
+		{ -100, 200 }, { -100, -200 }, // Left moves
+		{ 200, 100 }, { 200, -100 },  // Down moves
+		{ -200, 100 }, { -200, -100 } // Up moves
+	};
+
+	// Iterating over each direction
+	for (const auto& direction : directions) {
+		sf::Vector2f nextPosition = currentPosition + direction;
+
+		// Check if the move is within bounds
+		if (board.isWithinBounds(nextPosition))
+		{
+			if (board.isEmptySquare(pieces, nextPosition)) // Empty square, can move
+			{
+				possibleMoves.push_back(nextPosition);
+			}
+			else if (board.isOpponentPiece(nextPosition, pieces, this->getColor())) // Enemy on the square, capture
+			{
+				possibleMoves.push_back(nextPosition);
+			}
+		}
+	}
+
+	return possibleMoves;
 }
+

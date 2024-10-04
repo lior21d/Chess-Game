@@ -26,7 +26,7 @@ public:
 
 	virtual void draw(sf::RenderWindow& window) = 0;
 
-	virtual bool isValidMove(const sf::Vector2f& newPosition) const = 0;
+	
 
 	void setPosition(const sf::Vector2f& position);
 

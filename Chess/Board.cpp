@@ -69,5 +69,12 @@ bool Board::isEmptySquare(const std::vector<Piece*>& pieces, const sf::Vector2f&
     return true;
 }
 
+bool Board::isWithinBounds(const sf::Vector2f& position) const {
+    int x = position.x / squareSize;
+    int y = position.y / squareSize;
+
+    // Check if position of a piece is within the board bounds
+    return (x >= 0 && x < 8 && y >= 0 && y < 8);
+}
 
 

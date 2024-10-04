@@ -10,13 +10,7 @@ void Pawn::draw(sf::RenderWindow& window)
 	window.draw(sprite); // Sprite from Piece
 }
 
-// Overriden isValidMove function
-bool Pawn::isValidMove(const sf::Vector2f& newPosition) const
-{
-	// Need to implement logic for moving
-	return true; // Placeholder for now
-}
-
+// Get all possible moves for pawn piece
 std::vector<sf::Vector2f> Pawn::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces) 
 {
 	std::vector<sf::Vector2f> possibleMoves;
@@ -27,13 +21,13 @@ std::vector<sf::Vector2f> Pawn::getPossibleMoves(Board& board, const std::vector
 
 	// Forward move
 	sf::Vector2f forwardMove = currentPosition + sf::Vector2f(0, direction * 100);
-	if (board.isEmptySquare(pieces, forwardMove)) {
+	if (board.isEmptySquare(pieces, forwardMove) && board.isWithinBounds(forwardMove)) {
 		possibleMoves.push_back(forwardMove);
 	}
 	// Double step - first move
 	if (this->firstMove == true) {
 		sf::Vector2f doubleMove = currentPosition + sf::Vector2f(0, direction * 200);
-		if (board.isEmptySquare(pieces, doubleMove)) {
+		if (board.isEmptySquare(pieces, doubleMove) && board.isWithinBounds(doubleMove)) {
 			possibleMoves.push_back(doubleMove);
 			this->firstMove = false;
 		}
@@ -44,12 +38,12 @@ std::vector<sf::Vector2f> Pawn::getPossibleMoves(Board& board, const std::vector
 	sf::Vector2f captureRight = currentPosition + sf::Vector2f(100, direction * 100);
 	sf::Vector2f captureLeft = currentPosition + sf::Vector2f(-100, direction * 100);
 
-	if (board.isOpponentPiece(captureRight, pieces, this->getColor()))
+	if (board.isOpponentPiece(captureRight, pieces, this->getColor()) && board.isWithinBounds(captureRight))
 	{
 		possibleMoves.push_back(captureRight);
 	}
 
-	if (board.isOpponentPiece(captureLeft, pieces, this->getColor()))
+	if (board.isOpponentPiece(captureLeft, pieces, this->getColor()) && board.isWithinBounds(captureLeft))
 	{
 		possibleMoves.push_back(captureLeft);
 	}

@@ -17,8 +17,6 @@ public:
 
 	void draw(sf::RenderWindow& window) override;
 
-	bool isValidMove(const sf::Vector2f& newPosition) const override;
-
 	std::vector<sf::Vector2f> getPossibleMoves(Board& board, const std::vector<Piece*>& pieces) override;
 	
 	bool getFirstMove();

@@ -1,8 +1,6 @@
 #include "Rook.h"
 
 
-#include "Knight.h"
-
 
 // Constructor
 Rook::Rook(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture)
@@ -14,9 +12,42 @@ void Rook::draw(sf::RenderWindow& window)
 	window.draw(sprite); // Sprite from piece
 }
 
-// Overriden isValidMove function
-bool Rook::isValidMove(const sf::Vector2f& newPosition) const
+std::vector<sf::Vector2f> Rook::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces)
 {
-	// Need to implement logic for moving
-	return true; // Placeholder for now
+	std::vector<sf::Vector2f> possibleMoves;
+	sf::Vector2f currentPosition = this->getPosition();
+
+	sf::Vector2f directions[] = {
+		{0, -100}, // Up
+		{0, 100}, // Down
+		{-100, 0}, // Left
+		{100,0} // Right
+	};
+
+	// Iterating over each direction
+	for (const auto& direction : directions) {
+		sf::Vector2f nextPosition = currentPosition + direction;
+
+		// Keep moving in the same direction until we hit a piece or reach bounds of border
+		while (board.isWithinBounds(nextPosition))
+		{
+			if (board.isEmptySquare(pieces, nextPosition)) // Empty square, piece can move
+			{
+				possibleMoves.push_back(nextPosition);
+			}
+			else if (board.isOpponentPiece(nextPosition, pieces, this->getColor())) // Reached an enemy piece, will capture
+			{
+				possibleMoves.push_back(nextPosition); // Capture
+				break; // Stop after capturing
+			}
+			else
+			{
+				break; // Stop if friendly piece
+			}
+			nextPosition += direction;
+		}
+	}
+
+	return possibleMoves;
 }
+
