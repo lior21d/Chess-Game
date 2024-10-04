@@ -15,10 +15,10 @@ std::vector<Piece*> createAllPieces(TextureManager* textureManager) {
 	for (int i = 0; i < 8; ++i)
 	{
 		// Black pawns
-		pieces.push_back(new Pawn("black", sf::Vector2f(i * 100, 1 * 100), textureManager->getTexture("black_pawn")));
+		pieces.push_back(new Pawn("black", sf::Vector2f(static_cast<float>(i) * 100, 1 * 100), textureManager->getTexture("black_pawn")));
 
 		// White pawns
-		pieces.push_back(new Pawn("white", sf::Vector2f(i * 100, 6 * 100), textureManager->getTexture("white_pawn")));
+		pieces.push_back(new Pawn("white", sf::Vector2f(static_cast<float>(i) * 100, 6 * 100), textureManager->getTexture("white_pawn")));
 	}
 
 	// Creating rooks

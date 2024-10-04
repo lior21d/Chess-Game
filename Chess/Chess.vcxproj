@@ -26,7 +26,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Piece.cpp" />
-    <ClCompile Include="Piece.h" />
     <ClCompile Include="PieceGenerator.cpp" />
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="Rook.cpp" />
@@ -39,6 +38,7 @@
     <ClInclude Include="King.h" />
     <ClInclude Include="Knight.h" />
     <ClInclude Include="Pawn.h" />
+    <ClInclude Include="Piece.h" />
     <ClInclude Include="PieceGenerator.h" />
     <ClInclude Include="Queen.h" />
     <ClInclude Include="Rook.h" />

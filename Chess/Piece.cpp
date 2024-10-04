@@ -10,9 +10,9 @@ Piece::Piece(const std::string& color, const sf::Vector2f& position, const sf::T
 	// Set the sprite to be 100x100
 	sf::Vector2u textureSize = texture.getSize();
 	float scaleFactor = 100.0f / textureSize.x;
-	
-	sprite.setScale(scaleFactor , scaleFactor);
-	
+
+	sprite.setScale(scaleFactor, scaleFactor);
+
 }
 
 // Set the postion of the piece
@@ -35,4 +35,8 @@ std::string Piece::getColor() const {
 const sf::Sprite& Piece::getSprite() const
 {
 	return sprite;
+}
+
+std::vector<sf::Vector2f> Piece::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces) {
+	return {}; // Empty vector for default behavior
 }

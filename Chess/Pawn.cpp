@@ -2,7 +2,7 @@
 
 // Constructor
 Pawn::Pawn(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture)
-	: Piece(color, position, texture) {}
+	: Piece(color, position, texture), firstMove(true) {}
 
 // Overriden draw function
 void Pawn::draw(sf::RenderWindow& window)
@@ -11,8 +11,59 @@ void Pawn::draw(sf::RenderWindow& window)
 }
 
 // Overriden isValidMove function
-bool Pawn::isValidMove(const sf::Vector2f& newPosition) const 
+bool Pawn::isValidMove(const sf::Vector2f& newPosition) const
 {
 	// Need to implement logic for moving
 	return true; // Placeholder for now
+}
+
+std::vector<sf::Vector2f> Pawn::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces) 
+{
+	std::vector<sf::Vector2f> possibleMoves;
+	sf::Vector2f currentPosition = this->getPosition();
+
+	// Getting movement direction
+	int direction = (this->getColor() == "white") ? -1 : 1; // White goes up, black goes down
+
+	// Forward move
+	sf::Vector2f forwardMove = currentPosition + sf::Vector2f(0, direction * 100);
+	if (board.isEmptySquare(pieces, forwardMove)) {
+		possibleMoves.push_back(forwardMove);
+	}
+	// Double step - first move
+	if (this->firstMove == true) {
+		sf::Vector2f doubleMove = currentPosition + sf::Vector2f(0, direction * 200);
+		if (board.isEmptySquare(pieces, doubleMove)) {
+			possibleMoves.push_back(doubleMove);
+			this->firstMove = false;
+		}
+	}
+	
+
+	// Capture moves (diagonal)
+	sf::Vector2f captureRight = currentPosition + sf::Vector2f(100, direction * 100);
+	sf::Vector2f captureLeft = currentPosition + sf::Vector2f(-100, direction * 100);
+
+	if (board.isOpponentPiece(captureRight, pieces, this->getColor()))
+	{
+		possibleMoves.push_back(captureRight);
+	}
+
+	if (board.isOpponentPiece(captureLeft, pieces, this->getColor()))
+	{
+		possibleMoves.push_back(captureLeft);
+	}
+
+
+	return possibleMoves;
+}
+
+
+
+
+bool Pawn::getFirstMove() {
+	return firstMove;
+}
+void Pawn::setFirstMove(bool flag) {
+	firstMove = flag;
 }

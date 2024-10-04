@@ -1,5 +1,6 @@
 #include "Board.h"
 
+
 Board::Board(int squareSize)
     : squareSize(squareSize) {
 
@@ -17,9 +18,15 @@ Board::Board(int squareSize)
             else {
                 squares[row][col].setFillColor(white); // White
             }
+
+
         }
     }
+
 }
+
+
+
 
 void Board::draw(sf::RenderWindow& window) {
     for (int row = 0; row < BOARD_SIZE; ++row) {
@@ -28,6 +35,8 @@ void Board::draw(sf::RenderWindow& window) {
         }
     }
 }
+
+
 
 sf::Vector2f Board::getClosestSquare(const sf::Vector2f& position) const {
 
@@ -39,6 +48,26 @@ sf::Vector2f Board::getClosestSquare(const sf::Vector2f& position) const {
     float yCorner = static_cast<float>(row) * squareSize;
 
     return sf::Vector2f(xCorner, yCorner);
-    
 }
+
+bool Board::isOpponentPiece(const sf::Vector2f& position, const std::vector<Piece*>& pieces, const std::string& color) {
+    for (const auto& piece : pieces) {
+        if (piece->getPosition() == position && piece->getColor() != color) {
+            return true;
+        }
+    }
+   return false;
+}
+
+bool Board::isEmptySquare(const std::vector<Piece*>& pieces, const sf::Vector2f& position)
+{
+    for (const auto& piece : pieces) {
+        if (piece->getPosition() == position) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 

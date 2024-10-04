@@ -1,6 +1,5 @@
 #include "Window.h"
-
-#include "iostream"
+#include <iostream>
 Window::Window(const std::string& title, int width, int height)
     : title(title), width(width), height(height) {}
 
@@ -51,17 +50,20 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                         selectedPiece = piece;
                         originalPos = selectedPiece->getPosition();
                         isDragging = true;
-                        
+                        // Print out possible move
+                        std::vector<sf::Vector2f> test = selectedPiece->getPossibleMoves(board, pieces);
+                        for (auto& vec : test) {
+                            std::cout << "X:" << vec.x << " Y:" << vec.y << std::endl;
+                            std::cout << "" << std::endl;
+                        }
                     }
                 }
             }
         }
-
+        // Stopped holding the piece
         else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
             isDragging = false;
-            if (selectedPiece) {
-                // Snapping current piece to new square
-            }
+            
         }
 
         // Dragging
@@ -72,17 +74,21 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
             
         }
 
-        //Snapping
+        //Snapping, here we actually move the piece to the square
             if (!isDragging && selectedPiece) {
                
                 sf::Vector2f newPiecePos = board.getClosestSquare(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
                 
                 if (newPiecePos.x >= 0 && newPiecePos.x <= 800 && newPiecePos.y >= 0 && newPiecePos.y <= 800) { // In bounds
+                    
                     selectedPiece->setPosition(newPiecePos);
                     selectedPiece = nullptr;
+  
+                    
                 }
                 else {
                     selectedPiece->setPosition(originalPos);
+                    selectedPiece = nullptr;
                 }
         }
     }

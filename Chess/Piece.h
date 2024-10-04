@@ -4,6 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
+
+class Board;
+
 class Piece {
 
 private:
@@ -18,21 +21,21 @@ public:
 	// Constructor
 	Piece(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture);
 
-	
+
 	virtual ~Piece() = default;
 
 	virtual void draw(sf::RenderWindow& window) = 0;
 
-	
 	virtual bool isValidMove(const sf::Vector2f& newPosition) const = 0;
 
-	
 	void setPosition(const sf::Vector2f& position);
 
-	
+	virtual std::vector<sf::Vector2f> getPossibleMoves(Board& board, const std::vector<Piece*>& pieces);
+
+
 	sf::Vector2f getPosition() const;
 
-	
+
 	std::string getColor() const;
 
 	const sf::Sprite& getSprite() const;
