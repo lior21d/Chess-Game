@@ -84,6 +84,14 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                 if (newPiecePos.x >= 0 && newPiecePos.x <= 800 && newPiecePos.y >= 0 && newPiecePos.y <= 800) { // In bounds
                     
                     selectedPiece->setPosition(newPiecePos);
+                    // Check for capture, if there is capturing, remove captured piece
+                    Piece* capturedPiece = board.getPieceAtPosition(newPiecePos, pieces);
+                    if (capturedPiece && board.isOpponentPiece(newPiecePos, pieces, selectedPiece->getColor()))
+                    {
+                        // Capturing
+                        pieces.erase(std::remove(pieces.begin(), pieces.end(), capturedPiece), pieces.end());
+                        delete capturedPiece;
+                    }
                     selectedPiece = nullptr;
   
                     

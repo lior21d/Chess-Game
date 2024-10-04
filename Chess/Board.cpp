@@ -77,4 +77,15 @@ bool Board::isWithinBounds(const sf::Vector2f& position) const {
     return (x >= 0 && x < 8 && y >= 0 && y < 8);
 }
 
+Piece* Board::getPieceAtPosition(const sf::Vector2f& position, const std::vector<Piece*>& pieces)
+{
+    for (const auto& piece : pieces)
+    {
+        if (piece->getPosition() == position) {
+            return piece;
+        }
+    }
+    return nullptr;
+}
+
 
