@@ -15,12 +15,14 @@ public:
     bool isOpen();
     void handleEvents(std::vector<Piece*>& pieces, Board& board);
     sf::RenderWindow& getRenderWindow();
+    std::vector<sf::Vector2f> possibleMoves;
 
 private:
     sf::RenderWindow window;
     std::string title;
     int width;
     int height;
+    
 };
 
 #endif // WINDOW_H

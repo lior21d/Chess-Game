@@ -30,7 +30,7 @@ public:
 
 	void setPosition(const sf::Vector2f& position);
 
-	virtual std::vector<sf::Vector2f> getPossibleMoves(Board& board, const std::vector<Piece*>& pieces);
+	virtual void getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std::vector<sf::Vector2f>& possibleMoves) = 0;
 
 
 	sf::Vector2f getPosition() const;

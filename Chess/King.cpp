@@ -11,9 +11,9 @@ void King::draw(sf::RenderWindow& window)
 	window.draw(sprite); // Sprite from piece
 }
 
-std::vector<sf::Vector2f> King::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces)
+void King::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std::vector<sf::Vector2f>& possibleMoves)
 {
-	std::vector<sf::Vector2f> possibleMoves;
+	possibleMoves.clear();
 	sf::Vector2f currentPosition = this->getPosition();
 
 	sf::Vector2f directions[] = {
@@ -48,6 +48,6 @@ std::vector<sf::Vector2f> King::getPossibleMoves(Board& board, const std::vector
 		
 	}
 
-	return possibleMoves;
+	
 }
 

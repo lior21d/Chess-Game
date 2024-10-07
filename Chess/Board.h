@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
-#include "Piece.h"
+
 
 class Board {
 public:
@@ -20,6 +20,8 @@ public:
     bool isEmptySquare(const std::vector<Piece*>& pieces, const sf::Vector2f& position);
     bool isWithinBounds(const sf::Vector2f& position) const;
     Piece* getPieceAtPosition(const sf::Vector2f& position, const std::vector<Piece*>& pieces);
+    bool isValidMove(const std::vector<sf::Vector2f>& possibleMoves, const sf::Vector2f& newPosition);
+    
 private:
     static const int BOARD_SIZE = 8;
     int squareSize;

@@ -11,9 +11,9 @@ void Queen::draw(sf::RenderWindow& window)
 	window.draw(sprite); // Sprite from piece
 }
 
-std::vector<sf::Vector2f> Queen::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces)
+void Queen::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std::vector<sf::Vector2f>& possibleMoves)
 {
-	std::vector<sf::Vector2f> possibleMoves;
+	possibleMoves.clear();
 	sf::Vector2f currentPosition = this->getPosition();
 
 	// Because the queen moves like a rook and a bishop combined, we will check for both
@@ -83,6 +83,5 @@ std::vector<sf::Vector2f> Queen::getPossibleMoves(Board& board, const std::vecto
 
 	}
 
-	return possibleMoves;
 }
 

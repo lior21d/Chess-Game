@@ -37,6 +37,3 @@ const sf::Sprite& Piece::getSprite() const
 	return sprite;
 }
 
-std::vector<sf::Vector2f> Piece::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces) {
-	return {}; // Empty vector for default behavior
-}

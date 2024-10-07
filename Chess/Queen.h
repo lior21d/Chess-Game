@@ -16,7 +16,7 @@ public:
 
 	void draw(sf::RenderWindow& window) override;
 
-	std::vector<sf::Vector2f> getPossibleMoves(Board& board, const std::vector<Piece*>& pieces) override;
+	void getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std::vector<sf::Vector2f>& possibleMoves) override;
 };
 
 #endif // KNIGHT_H

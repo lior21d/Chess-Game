@@ -11,13 +11,13 @@ void Pawn::draw(sf::RenderWindow& window)
 }
 
 // Get all possible moves for pawn piece
-std::vector<sf::Vector2f> Pawn::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces) 
+void Pawn::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std::vector<sf::Vector2f>& possibleMoves)
 {
-	std::vector<sf::Vector2f> possibleMoves;
+	possibleMoves.clear();
 	sf::Vector2f currentPosition = this->getPosition();
 
 	// Getting movement direction
-	int direction = (this->getColor() == "white") ? -1 : 1; // White goes up, black goes down
+	float direction = (this->getColor() == "white") ? -1.0f : 1.0f; // White goes up, black goes down
 
 	// Forward move
 	sf::Vector2f forwardMove = currentPosition + sf::Vector2f(0, direction * 100);
@@ -48,8 +48,6 @@ std::vector<sf::Vector2f> Pawn::getPossibleMoves(Board& board, const std::vector
 		possibleMoves.push_back(captureLeft);
 	}
 
-
-	return possibleMoves;
 }
 
 
