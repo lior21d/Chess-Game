@@ -54,7 +54,8 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                         selectedPiece->getPossibleMoves(board, pieces, possibleMoves);
                         originalPos = selectedPiece->getPosition();
                         isDragging = true;
-                        
+                        // Show the squares that are available
+                        board.showAvailableSquares(possibleMoves);
                     }
                 }
             }
@@ -63,7 +64,8 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
         // Stopped holding the piece
         else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
             isDragging = false;
-            
+            // Reset squares after stopping to drag
+            board.colorSquares();
         }
 
         // Dragging

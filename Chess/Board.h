@@ -21,7 +21,8 @@ public:
     bool isWithinBounds(const sf::Vector2f& position) const;
     Piece* getPieceAtPosition(const sf::Vector2f& position, const std::vector<Piece*>& pieces);
     bool isValidMove(const std::vector<sf::Vector2f>& possibleMoves, const sf::Vector2f& newPosition);
-    
+    void showAvailableSquares(const std::vector<sf::Vector2f>& possibleMoves);
+    void colorSquares();
 private:
     static const int BOARD_SIZE = 8;
     int squareSize;

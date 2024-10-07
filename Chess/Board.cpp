@@ -10,14 +10,7 @@ Board::Board(int squareSize)
             squares[row][col].setPosition(static_cast<float>(col) * static_cast<float>(squareSize), static_cast<float>(row) * static_cast<float>(squareSize));
 
             // Color the board
-            const sf::Color green = sf::Color(118, 150, 86, 255);
-            const sf::Color white = sf::Color(238, 238, 210, 255);
-            if ((row + col) % 2 != 0) {
-                squares[row][col].setFillColor(green); // Green
-            }
-            else {
-                squares[row][col].setFillColor(white); // White
-            }
+            colorSquares();
 
 
         }
@@ -97,5 +90,35 @@ bool Board::isValidMove(const std::vector<sf::Vector2f>& possibleMoves, const sf
     }
     return false;  // The new position is not in the list of possible moves
 }
+
+void Board::showAvailableSquares(const std::vector<sf::Vector2f>& possibleMoves)
+{
+    // Color all available squares
+    const sf::Color availableColor = sf::Color(178, 199, 148, 255);
+    for (const auto& pos : possibleMoves) {
+        squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].setFillColor(availableColor);
+    }
+
+}
+
+void Board::colorSquares()
+{
+    for (int row = 0; row < BOARD_SIZE; ++row) {
+        for (int col = 0; col < BOARD_SIZE; ++col) {
+
+            // Color the board
+            const sf::Color green = sf::Color(118, 150, 86, 255);
+            const sf::Color white = sf::Color(238, 238, 210, 255);
+            if ((row + col) % 2 != 0) {
+                squares[row][col].setFillColor(green); // Green
+            }
+            else {
+                squares[row][col].setFillColor(white); // White
+            }
+        }
+    }
+}
+
+
 
 
