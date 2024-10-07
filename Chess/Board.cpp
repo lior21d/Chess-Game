@@ -106,7 +106,7 @@ void Board::colorSquares()
     for (int row = 0; row < BOARD_SIZE; ++row) {
         for (int col = 0; col < BOARD_SIZE; ++col) {
 
-            // Color the board
+            // Color the board, mainly used to reset the colors
             const sf::Color green = sf::Color(118, 150, 86, 255);
             const sf::Color white = sf::Color(238, 238, 210, 255);
             if ((row + col) % 2 != 0) {
