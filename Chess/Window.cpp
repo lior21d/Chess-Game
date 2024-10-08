@@ -1,5 +1,6 @@
 #include "Window.h"
 #include <iostream>
+#include "Pawn.h"
 Window::Window(const std::string& title, int width, int height)
     : title(title), width(width), height(height) {}
 
@@ -49,7 +50,7 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
             {
                 for (auto& piece : pieces)
                 {
-                    if (piece->getSprite().getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                    if (piece->getSprite().getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && board.getTurnColor() == piece->getColor()) {
                         selectedPiece = piece;
                         selectedPiece->getPossibleMoves(board, pieces, possibleMoves);
                         originalPos = selectedPiece->getPosition();
@@ -98,13 +99,19 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                             capturedPiece = nullptr;
                         }
                         selectedPiece = nullptr;
-                       
+                        // Make others player turn
+                        board.setTurn(!board.getTurn());
                     
                     
                 }
                 else {
                     selectedPiece->setPosition(originalPos);
+                    // Reset first move, as falsly moving updates firstMove on pawn
+                    if (dynamic_cast<Pawn*>(selectedPiece) && selectedPiece->getPosition().y == 600 && selectedPiece->getColor() == "white" || dynamic_cast<Pawn*>(selectedPiece) && selectedPiece->getPosition().y == 100 && selectedPiece->getColor() == "black") {
+                        dynamic_cast<Pawn*>(selectedPiece)->setFirstMove(true);
+                    }
                     selectedPiece = nullptr;
+                    
                 }
                 
         }

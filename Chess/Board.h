@@ -23,11 +23,16 @@ public:
     bool isValidMove(const std::vector<sf::Vector2f>& possibleMoves, const sf::Vector2f& newPosition);
     void showAvailableSquares(const std::vector<sf::Vector2f>& possibleMoves);
     void colorSquares();
+    std::string getTurnColor();
+    void setTurn(bool turn);
+    bool getTurn();
+
+
 private:
     static const int BOARD_SIZE = 8;
     int squareSize;
     sf::RectangleShape squares[BOARD_SIZE][BOARD_SIZE];
-    
+    bool turn; // boolean for who's turn it is // white true black false
 };
 
 #endif // BOARD_H

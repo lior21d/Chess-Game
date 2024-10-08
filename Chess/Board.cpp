@@ -2,7 +2,7 @@
 #include "iostream"
 
 Board::Board(int squareSize)
-    : squareSize(squareSize) {
+    : squareSize(squareSize), turn(true) {
 
     for (int row = 0; row < BOARD_SIZE; ++row) {
         for (int col = 0; col < BOARD_SIZE; ++col) {
@@ -118,6 +118,31 @@ void Board::colorSquares()
         }
     }
 }
+
+std::string Board::getTurnColor()
+{
+    if (turn)
+    {
+        return "white";
+    }
+    else {
+        return "black";
+    }
+}
+
+void Board::setTurn(bool turn)
+{
+    this->turn = turn;
+}
+
+bool Board::getTurn()
+{
+    return turn;
+}
+
+
+
+
 
 
 
