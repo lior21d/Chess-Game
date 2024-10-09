@@ -1,5 +1,5 @@
 #include "Pawn.h"
-
+#include "iostream"
 // Constructor
 Pawn::Pawn(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture)
 	: Piece(color, position, texture), firstMove(true) {}
@@ -48,6 +48,18 @@ void Pawn::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 		possibleMoves.push_back(captureLeft);
 	}
 
+	// En passant check
+	sf::Vector2f enPassantTarget = board.getEnPassantTarget();
+	if (enPassantTarget.x > 0 && enPassantTarget.y > 0) { // There is a possible en passant
+		// Check if enPassantTarget is a valid diagonal move for this pawn
+		if (abs(enPassantTarget.x - currentPosition.x) == 100 &&
+			enPassantTarget.y == currentPosition.y + (getColor() == "white" ? -100 : 100)) {
+			possibleMoves.push_back(enPassantTarget);
+		}
+			
+		
+	}
+	
 }
 
 

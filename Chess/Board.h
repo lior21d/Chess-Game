@@ -27,12 +27,16 @@ public:
     void setTurn(bool turn);
     bool getTurn();
 
+    // En passant 
+    void updateEnPassantTarget(Piece* pawn, const sf::Vector2f& start, const sf::Vector2f& finish);
+    sf::Vector2f getEnPassantTarget() const;
 
 private:
     static const int BOARD_SIZE = 8;
     int squareSize;
     sf::RectangleShape squares[BOARD_SIZE][BOARD_SIZE];
     bool turn; // boolean for who's turn it is // white true black false
+    sf::Vector2f enPassantTarget; // Square where the en passant capture is possible
 };
 
 #endif // BOARD_H

@@ -87,22 +87,25 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                 if (newPiecePos.x >= 0 && newPiecePos.x <= 800 && newPiecePos.y >= 0 && newPiecePos.y <= 800 && board.isValidMove(possibleMoves, newPiecePos)) { // In bounds and possible
                     
                     
+                    // Check for enPassant capture
                     
-                        capturedPiece = board.getPieceAtPosition(newPiecePos, pieces);
-                        selectedPiece->setPosition(newPiecePos);
-                        // Check for capture, if there is capturing, remove captured piece
+                    capturedPiece = board.getPieceAtPosition(newPiecePos, pieces);
+                    
+                    selectedPiece->setPosition(newPiecePos);
+                    // Check for capture, if there is capturing, remove captured piece
                         
-                        if (capturedPiece && board.isOpponentPiece(newPiecePos, pieces, selectedPiece->getColor()))
-                        {
-                            // Capturing
-                            pieces.erase(std::remove(pieces.begin(), pieces.end(), capturedPiece), pieces.end());
-                            capturedPiece = nullptr;
-                        }
-                        selectedPiece = nullptr;
-                        // Make others player turn
-                        board.setTurn(!board.getTurn());
-                    
-                    
+                    if (capturedPiece && board.isOpponentPiece(newPiecePos, pieces, selectedPiece->getColor()))
+                    {
+                        // Capturing
+                        pieces.erase(std::remove(pieces.begin(), pieces.end(), capturedPiece), pieces.end());
+                        capturedPiece = nullptr;
+                    }
+                    // Check for en passant
+                    board.updateEnPassantTarget(selectedPiece, originalPos, newPiecePos);
+                    selectedPiece = nullptr;
+                        
+                    // Make others player turn
+                    board.setTurn(!board.getTurn());
                 }
                 else {
                     selectedPiece->setPosition(originalPos);

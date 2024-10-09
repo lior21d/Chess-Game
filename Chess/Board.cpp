@@ -1,8 +1,9 @@
 #include "Board.h"
 #include "iostream"
+#include "Pawn.h"
 
 Board::Board(int squareSize)
-    : squareSize(squareSize), turn(true) {
+    : squareSize(squareSize), turn(true), enPassantTarget(-1,-1) {
 
     for (int row = 0; row < BOARD_SIZE; ++row) {
         for (int col = 0; col < BOARD_SIZE; ++col) {
@@ -96,7 +97,14 @@ void Board::showAvailableSquares(const std::vector<sf::Vector2f>& possibleMoves)
     // Color all available squares
     const sf::Color availableColor = sf::Color(178, 199, 148, 255);
     for (const auto& pos : possibleMoves) {
-        squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].setFillColor(availableColor);
+        if (squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].getFillColor() == sf::Color(118, 150, 86, 255)) // Green
+        {
+            squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].setFillColor(sf::Color(118, 150, 86, 190));
+        }
+        else if (squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].getFillColor() == sf::Color(238, 238, 210, 255)) // White
+        {
+            squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].setFillColor(sf::Color(238, 238, 210, 190));
+        }
     }
 
 }
@@ -139,6 +147,28 @@ bool Board::getTurn()
 {
     return turn;
 }
+
+void Board::updateEnPassantTarget(Piece* pawn, const sf::Vector2f& start, const sf::Vector2f& finish)
+{
+    // Check if a pawn moved two squares forward
+    if (abs(finish.y - start.y) == 200 && dynamic_cast<Pawn*>(pawn))
+    {
+        // Set enPassantTarget to the square the pawn skipped over
+        enPassantTarget = sf::Vector2f(start.x, (start.y + finish.y) / 2);
+
+    }
+    else {
+        // Reset if no valid en passant move
+        enPassantTarget = sf::Vector2f(-1, -1);
+    }
+
+}
+
+sf::Vector2f Board::getEnPassantTarget() const
+{
+    return enPassantTarget;
+}
+
 
 
 
