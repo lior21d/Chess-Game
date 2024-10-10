@@ -148,6 +148,16 @@ bool Board::getTurn()
     return turn;
 }
 
+bool Board::checkInBounds(sf::Vector2f& newPiecePos)
+{
+    return (newPiecePos.x >= 0 && newPiecePos.x <= 800 && newPiecePos.y >= 0 && newPiecePos.y <= 800);
+}
+
+float Board::getSquareSize()
+{
+    return static_cast<float>(squareSize);
+}
+
 void Board::updateEnPassantTarget(Piece* pawn, const sf::Vector2f& start, const sf::Vector2f& finish)
 {
     // Check if a pawn moved two squares forward

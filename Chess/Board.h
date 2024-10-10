@@ -26,6 +26,8 @@ public:
     std::string getTurnColor();
     void setTurn(bool turn);
     bool getTurn();
+    bool checkInBounds(sf::Vector2f& newPiecePos);
+    float getSquareSize();
 
     // En passant 
     void updateEnPassantTarget(Piece* pawn, const sf::Vector2f& start, const sf::Vector2f& finish);

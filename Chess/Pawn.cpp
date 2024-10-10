@@ -27,7 +27,7 @@ void Pawn::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 	// Double step - first move
 	if (this->firstMove == true) {
 		sf::Vector2f doubleMove = currentPosition + sf::Vector2f(0, direction * 200);
-		if (board.isEmptySquare(pieces, doubleMove) && board.isWithinBounds(doubleMove)) {
+		if (board.isEmptySquare(pieces, doubleMove) && board.isEmptySquare(pieces, forwardMove) && board.isWithinBounds(doubleMove)) {
 			possibleMoves.push_back(doubleMove);
 			this->firstMove = false;
 		}

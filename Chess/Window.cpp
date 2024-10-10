@@ -77,30 +77,47 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
             
             
         }
-
+        
         //Snapping, here we actually move the piece to the square
             if (!isDragging && selectedPiece) {
                
                 sf::Vector2f newPiecePos = board.getClosestSquare(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
                 // Check if piece is able to move to new position
                 
-                if (newPiecePos.x >= 0 && newPiecePos.x <= 800 && newPiecePos.y >= 0 && newPiecePos.y <= 800 && board.isValidMove(possibleMoves, newPiecePos)) { // In bounds and possible
+                if (board.isWithinBounds(newPiecePos) && board.isValidMove(possibleMoves, newPiecePos)) { // In bounds and possible
                     
                     
                     // Check for enPassant capture
-                    
                     capturedPiece = board.getPieceAtPosition(newPiecePos, pieces);
                     
                     selectedPiece->setPosition(newPiecePos);
+
+                    // Check if en passant was made
+                    if (selectedPiece->getPosition() == board.getEnPassantTarget() && dynamic_cast<Pawn*>(selectedPiece))
+                    {
+                        sf::Vector2f enPassantCapturePos = selectedPiece->getPosition();
+                        // Get enPassantCapturePos relative to your selectedPiece
+                        selectedPiece->getColor() == "white" ? enPassantCapturePos.y += board.getSquareSize() : enPassantCapturePos.y -= board.getSquareSize();
+
+                        capturedPiece = board.getPieceAtPosition(enPassantCapturePos, pieces);
+                        if (capturedPiece && board.isOpponentPiece(enPassantCapturePos, pieces, selectedPiece->getColor()))
+                        {
+                            // Made en passant
+                            pieces.erase(std::remove(pieces.begin(), pieces.end(), capturedPiece), pieces.end());
+                            capturedPiece = nullptr;
+                        }
+                    }
+
                     // Check for capture, if there is capturing, remove captured piece
-                        
-                    if (capturedPiece && board.isOpponentPiece(newPiecePos, pieces, selectedPiece->getColor()))
+                    
+                    else if (capturedPiece && board.isOpponentPiece(newPiecePos, pieces, selectedPiece->getColor()))
                     {
                         // Capturing
                         pieces.erase(std::remove(pieces.begin(), pieces.end(), capturedPiece), pieces.end());
                         capturedPiece = nullptr;
                     }
-                    // Check for en passant
+                    
+                    // Check for new possible En passant target
                     board.updateEnPassantTarget(selectedPiece, originalPos, newPiecePos);
                     selectedPiece = nullptr;
                         
