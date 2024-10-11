@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "iostream"
 #include "Pawn.h"
+#include "King.h"
 
 Board::Board(int squareSize)
     : squareSize(squareSize), turn(true), enPassantTarget(-1,-1) {
@@ -158,6 +159,7 @@ float Board::getSquareSize()
     return static_cast<float>(squareSize);
 }
 
+
 void Board::updateEnPassantTarget(Piece* pawn, const sf::Vector2f& start, const sf::Vector2f& finish)
 {
     // Check if a pawn moved two squares forward
@@ -179,10 +181,40 @@ sf::Vector2f Board::getEnPassantTarget() const
     return enPassantTarget;
 }
 
+Piece* Board::findKing(const std::string& kingColor, const std::vector<Piece*>& pieces)
+{
+    for (Piece* piece : pieces)
+    {
+        if (dynamic_cast<King*>(piece) && piece->getColor() == kingColor)
+        {
+            return piece;
+        }
+    }
+    return nullptr;
+}
 
+bool Board::isKingInCheck(const std::string& kingColor, const std::vector<Piece*>& pieces)
+{
+    Piece* king = findKing(kingColor, pieces);
+    sf::Vector2f kingPosition = king->getPosition();
+    std::vector<sf::Vector2f>;
 
+    // Check each pieces position and check if king is in check
+    for (const auto& piece : pieces)
+    {
+        if (piece->getColor() != kingColor) // Opponent pieces
+        {
+            std::vector<sf::Vector2f> possibleMoves;
+            piece->getPossibleMoves(*this, pieces, possibleMoves);
+            if (std::find(possibleMoves.begin(), possibleMoves.end(), kingPosition) != possibleMoves.end())
+            {
+                return true; // King is in check
+            }
+        }
+    }
 
-
+    return false;
+}
 
 
 

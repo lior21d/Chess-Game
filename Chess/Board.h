@@ -28,6 +28,9 @@ public:
     bool getTurn();
     bool checkInBounds(sf::Vector2f& newPiecePos);
     float getSquareSize();
+    bool isKingInCheck(const std::string& kingColor, const std::vector<Piece*>& pieces);
+    Piece* findKing(const std::string& kingColor, const std::vector<Piece*>& pieces);
+    
 
     // En passant 
     void updateEnPassantTarget(Piece* pawn, const sf::Vector2f& start, const sf::Vector2f& finish);

@@ -33,7 +33,7 @@ void Pawn::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 		}
 	}
 	
-
+	
 	// Capture moves (diagonal)
 	sf::Vector2f captureRight = currentPosition + sf::Vector2f(100, direction * 100);
 	sf::Vector2f captureLeft = currentPosition + sf::Vector2f(-100, direction * 100);
@@ -50,7 +50,7 @@ void Pawn::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 
 	// En passant check
 	sf::Vector2f enPassantTarget = board.getEnPassantTarget();
-	if (enPassantTarget.x > 0 && enPassantTarget.y > 0) { // There is a possible en passant
+	if (board.isWithinBounds(enPassantTarget)) { // There is a possible en passant
 		// Check if enPassantTarget is a valid diagonal move for this pawn
 		if (abs(enPassantTarget.x - currentPosition.x) == 100 &&
 			enPassantTarget.y == currentPosition.y + (getColor() == "white" ? -100 : 100)) {
