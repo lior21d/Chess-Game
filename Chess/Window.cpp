@@ -44,13 +44,13 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
 
 
         // Handling piece movement
-
         else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
             {
-                // @todo fix pawn possiblemoves mess up when checking for checks and mates
+                
                 for (auto& piece : pieces)
                 {
+                    
                     if (piece->getSprite().getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && board.getTurnColor() == piece->getColor()) {
                         selectedPiece = piece;
                         selectedPiece->getPossibleMoves(board, pieces, possibleMoves);
@@ -120,6 +120,12 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                     
                     // Check for new possible En passant target
                     board.updateEnPassantTarget(selectedPiece, originalPos, newPiecePos);
+
+                    // Update pawn's first move property
+                    if (dynamic_cast<Pawn*>(selectedPiece))
+                    {
+                        dynamic_cast<Pawn*>(selectedPiece)->setFirstMove(false);
+                    }
                     selectedPiece = nullptr;
                         
                     // Make others player turn
@@ -127,10 +133,6 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                 }
                 else {
                     selectedPiece->setPosition(originalPos);
-                    // Reset first move, as falsly moving updates firstMove on pawn
-                    if (dynamic_cast<Pawn*>(selectedPiece) && selectedPiece->getPosition().y == 600 && selectedPiece->getColor() == "white" || dynamic_cast<Pawn*>(selectedPiece) && selectedPiece->getPosition().y == 100 && selectedPiece->getColor() == "black") {
-                        dynamic_cast<Pawn*>(selectedPiece)->setFirstMove(true);
-                    }
                     selectedPiece = nullptr;
                     
                 }

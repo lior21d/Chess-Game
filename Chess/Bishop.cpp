@@ -17,10 +17,10 @@ void Bishop::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, s
 	sf::Vector2f currentPosition = this->getPosition();
 
 	sf::Vector2f directions[] = {
-		{100, -100}, // Up-Right
-		{-100, -100}, // Up-Left
-		{100, 100}, // Down-Right
-		{-100, 100}, // Down-Left
+		{board.getSquareSize(), -board.getSquareSize()}, // Up-Right
+		{-board.getSquareSize(), -board.getSquareSize()}, // Up-Left
+		{board.getSquareSize(), board.getSquareSize()}, // Down-Right
+		{-board.getSquareSize(), board.getSquareSize()}, // Down-Left
 	};
 
 	// Iterating over each direction

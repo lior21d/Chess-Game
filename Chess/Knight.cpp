@@ -17,10 +17,10 @@ void Knight::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, s
 	sf::Vector2f currentPosition = this->getPosition();
 
 	sf::Vector2f directions[] = {
-		{ 100, 200 }, { 100, -200 },  // Right moves
-		{ -100, 200 }, { -100, -200 }, // Left moves
-		{ 200, 100 }, { 200, -100 },  // Down moves
-		{ -200, 100 }, { -200, -100 } // Up moves
+		{ board.getSquareSize(), 2 * board.getSquareSize() }, { board.getSquareSize(), -2 * board.getSquareSize() },  // Right moves
+		{ -board.getSquareSize(), 2 * board.getSquareSize() }, { -board.getSquareSize(), -2 * board.getSquareSize() }, // Left moves
+		{ 2 * board.getSquareSize(), board.getSquareSize() }, { 2 * board.getSquareSize(), -board.getSquareSize() },  // Down moves
+		{ -2 * board.getSquareSize(), board.getSquareSize() }, { -2 * board.getSquareSize(), -board.getSquareSize() } // Up moves
 	};
 
 	// Iterating over each direction

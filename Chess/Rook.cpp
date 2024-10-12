@@ -18,10 +18,10 @@ void Rook::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 	sf::Vector2f currentPosition = this->getPosition();
 
 	sf::Vector2f directions[] = {
-		{0, -100}, // Up
-		{0, 100}, // Down
-		{-100, 0}, // Left
-		{100,0} // Right
+		{0, -board.getSquareSize()}, // Up
+		{0, board.getSquareSize()}, // Down
+		{-board.getSquareSize(), 0}, // Left
+		{board.getSquareSize(),0} // Right
 	};
 
 	// Iterating over each direction

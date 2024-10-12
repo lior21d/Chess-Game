@@ -20,10 +20,10 @@ void Queen::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, st
 
 	// Rook movement
 	sf::Vector2f rookDir[] = {
-		{0, -100}, // Up
-		{0, 100}, // Down
-		{-100, 0}, // Left
-		{100,0} // Right
+		{0, -board.getSquareSize()}, // Up
+		{0, board.getSquareSize()}, // Down
+		{-board.getSquareSize(), 0}, // Left
+		{board.getSquareSize(),0} // Right
 	};
 
 	// Iterating over each direction
@@ -52,10 +52,10 @@ void Queen::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, st
 	
 	// Bishop movement
 	sf::Vector2f bishopDir[] = {
-		{100, -100}, // Up-Right
-		{-100, -100}, // Up-Left
-		{100, 100}, // Down-Right
-		{-100, 100}, // Down-Left
+		{board.getSquareSize(), -board.getSquareSize()}, // Up-Right
+		{-board.getSquareSize(), -board.getSquareSize()}, // Up-Left
+		{board.getSquareSize(), board.getSquareSize()}, // Down-Right
+		{-board.getSquareSize(), board.getSquareSize()}, // Down-Left
 	};
 
 	// Iterating over each direction

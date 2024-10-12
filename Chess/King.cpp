@@ -17,14 +17,14 @@ void King::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 	sf::Vector2f currentPosition = this->getPosition();
 
 	sf::Vector2f directions[] = {
-		{ 100, 0 },    // Right
-		{ -100, 0 },   // Left
-		{ 0, 100 },    // Down
-		{ 0, -100 },   // Up
-		{ 100, 100 },  // Bottom-right (Diagonal)
-		{ -100, 100 }, // Bottom-left (Diagonal)
-		{ 100, -100 }, // Top-right (Diagonal)
-		{ -100, -100 } // Top-left (Diagonal)
+		{ board.getSquareSize(), 0 },    // Right
+		{ -board.getSquareSize(), 0 },   // Left
+		{ 0, board.getSquareSize() },    // Down
+		{ 0, -board.getSquareSize() },   // Up
+		{ board.getSquareSize(), board.getSquareSize() },  // Bottom-right (Diagonal)
+		{ -board.getSquareSize(), board.getSquareSize() }, // Bottom-left (Diagonal)
+		{ board.getSquareSize(), -board.getSquareSize() }, // Top-right (Diagonal)
+		{ -board.getSquareSize(), -board.getSquareSize() } // Top-left (Diagonal)
 	};
 
 	// Iterating over each direction

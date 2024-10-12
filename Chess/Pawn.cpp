@@ -20,23 +20,22 @@ void Pawn::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 	float direction = (this->getColor() == "white") ? -1.0f : 1.0f; // White goes up, black goes down
 
 	// Forward move
-	sf::Vector2f forwardMove = currentPosition + sf::Vector2f(0, direction * 100);
+	sf::Vector2f forwardMove = currentPosition + sf::Vector2f(0, direction * board.getSquareSize());
 	if (board.isEmptySquare(pieces, forwardMove) && board.isWithinBounds(forwardMove)) {
 		possibleMoves.push_back(forwardMove);
 	}
 	// Double step - first move
 	if (this->firstMove == true) {
-		sf::Vector2f doubleMove = currentPosition + sf::Vector2f(0, direction * 200);
+		sf::Vector2f doubleMove = currentPosition + sf::Vector2f(0, direction * 2 * board.getSquareSize());
 		if (board.isEmptySquare(pieces, doubleMove) && board.isEmptySquare(pieces, forwardMove) && board.isWithinBounds(doubleMove)) {
 			possibleMoves.push_back(doubleMove);
-			this->firstMove = false;
 		}
 	}
 	
 	
 	// Capture moves (diagonal)
-	sf::Vector2f captureRight = currentPosition + sf::Vector2f(100, direction * 100);
-	sf::Vector2f captureLeft = currentPosition + sf::Vector2f(-100, direction * 100);
+	sf::Vector2f captureRight = currentPosition + sf::Vector2f(board.getSquareSize(), direction * board.getSquareSize());
+	sf::Vector2f captureLeft = currentPosition + sf::Vector2f(-board.getSquareSize(), direction * board.getSquareSize());
 
 	if (board.isOpponentPiece(captureRight, pieces, this->getColor()) && board.isWithinBounds(captureRight))
 	{
@@ -52,8 +51,8 @@ void Pawn::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 	sf::Vector2f enPassantTarget = board.getEnPassantTarget();
 	if (board.isWithinBounds(enPassantTarget)) { // There is a possible en passant
 		// Check if enPassantTarget is a valid diagonal move for this pawn
-		if (abs(enPassantTarget.x - currentPosition.x) == 100 &&
-			enPassantTarget.y == currentPosition.y + (getColor() == "white" ? -100 : 100)) {
+		if (abs(enPassantTarget.x - currentPosition.x) == board.getSquareSize() &&
+			enPassantTarget.y == currentPosition.y + (getColor() == "white" ? -board.getSquareSize() : board.getSquareSize())) {
 			possibleMoves.push_back(enPassantTarget);
 		}
 			

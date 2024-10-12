@@ -163,7 +163,7 @@ float Board::getSquareSize()
 void Board::updateEnPassantTarget(Piece* pawn, const sf::Vector2f& start, const sf::Vector2f& finish)
 {
     // Check if a pawn moved two squares forward
-    if (abs(finish.y - start.y) == 200 && dynamic_cast<Pawn*>(pawn))
+    if (abs(finish.y - start.y) == 2 * squareSize && dynamic_cast<Pawn*>(pawn))
     {
         // Set enPassantTarget to the square the pawn skipped over
         enPassantTarget = sf::Vector2f(start.x, (start.y + finish.y) / 2);
