@@ -44,10 +44,11 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
 
 
         // Handling piece movement
-       
+
         else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
             {
+                // @todo fix pawn possiblemoves mess up when checking for checks and mates
                 for (auto& piece : pieces)
                 {
                     if (piece->getSprite().getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && board.getTurnColor() == piece->getColor()) {

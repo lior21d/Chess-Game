@@ -16,6 +16,7 @@ public:
     sf::Vector2f getClosestSquare(const sf::Vector2f& position) const;
 
     // Methods to help game logic
+    float getSquareSize();
     bool isOpponentPiece(const sf::Vector2f& position, const std::vector<Piece*>& pieces, const std::string& color);
     bool isEmptySquare(const std::vector<Piece*>& pieces, const sf::Vector2f& position);
     bool isWithinBounds(const sf::Vector2f& position) const;
@@ -27,10 +28,12 @@ public:
     void setTurn(bool turn);
     bool getTurn();
     bool checkInBounds(sf::Vector2f& newPiecePos);
-    float getSquareSize();
-    bool isKingInCheck(const std::string& kingColor, const std::vector<Piece*>& pieces);
+
+    // Check and mate
     Piece* findKing(const std::string& kingColor, const std::vector<Piece*>& pieces);
-    
+    bool isKingInCheck(const std::string& kingColor, const std::vector<Piece*>& pieces);
+    bool isCheckmate(const std::string& kingColor, const std::vector<Piece*>& pieces);
+    bool simulateMove(const sf::Vector2f& move, const std::string& kingColor, std::vector<Piece*> pieces, Piece* piece);
 
     // En passant 
     void updateEnPassantTarget(Piece* pawn, const sf::Vector2f& start, const sf::Vector2f& finish);

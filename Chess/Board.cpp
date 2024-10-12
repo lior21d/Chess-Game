@@ -196,24 +196,99 @@ Piece* Board::findKing(const std::string& kingColor, const std::vector<Piece*>& 
 bool Board::isKingInCheck(const std::string& kingColor, const std::vector<Piece*>& pieces)
 {
     Piece* king = findKing(kingColor, pieces);
-    sf::Vector2f kingPosition = king->getPosition();
-    std::vector<sf::Vector2f>;
+    if (king != nullptr) {
+        sf::Vector2f kingPosition = king->getPosition();
 
-    // Check each pieces position and check if king is in check
-    for (const auto& piece : pieces)
-    {
-        if (piece->getColor() != kingColor) // Opponent pieces
+        // Check each pieces position and check if king is in check
+        for (const auto& piece : pieces)
         {
-            std::vector<sf::Vector2f> possibleMoves;
-            piece->getPossibleMoves(*this, pieces, possibleMoves);
-            if (std::find(possibleMoves.begin(), possibleMoves.end(), kingPosition) != possibleMoves.end())
+            if (piece->getColor() != kingColor) // Opponent pieces
             {
-                return true; // King is in check
+                std::vector<sf::Vector2f> possibleMoves;
+                piece->getPossibleMoves(*this, pieces, possibleMoves);
+                if (std::find(possibleMoves.begin(), possibleMoves.end(), kingPosition) != possibleMoves.end())
+                {
+                    return true; // King is in check
+                }
             }
         }
     }
 
     return false;
+}
+
+bool Board::isCheckmate(const std::string& kingColor, const std::vector<Piece*>& pieces)
+{
+    // Need to check if any possible move that a player can do will uncheck the king, if not then its checkmate and game over
+
+    // First check for a check, if there is no check no point in checking for a checkmate
+    if (!isKingInCheck(kingColor, pieces))
+    {
+        return false;
+    }
+
+    // King is indeed in check so we will simulate each move, and if it unchecks the king its not checkmate
+    // Iterate through each piece
+    for (const auto& piece : pieces)
+    {
+        if (piece->getColor() == kingColor)
+        {
+            // Iterate through each pieces move
+            std::vector<sf::Vector2f> possibleMoves;
+            piece->getPossibleMoves(*this, pieces, possibleMoves);
+            for (const auto& move : possibleMoves)
+            {
+                // Simualte each move and check if it removes the check
+                if (!simulateMove(move, kingColor, pieces, piece))
+                {
+                    return false; // There is a move that removes the check
+                }
+            }
+        }
+    }
+
+    return true; // No possible move to remove the check hence its mate and the game is over
+}
+
+bool Board::simulateMove(const sf::Vector2f& move, const std::string& kingColor, std::vector<Piece*> pieces, Piece* piece)
+{
+    // Store the original position to revert back to it after simulation is done
+    sf::Vector2f originalPosition = piece->getPosition();
+
+    // Temporary variable for captured piece (to restore it later)
+    Piece* capturedPiece = nullptr;
+
+    // Check for enemy piece in the move we are about to perform
+    if (isOpponentPiece(move, pieces, kingColor))
+    {
+        // Will capture
+        Piece* capturedPiece = getPieceAtPosition(move, pieces);
+
+        // Remove it and set the piece to its new position and check if it removes check
+        if (capturedPiece)
+        {
+            // Remove the captured piece from the simulated 'pieces' vector
+            pieces.erase(std::remove(pieces.begin(), pieces.end(), capturedPiece), pieces.end());
+
+        }
+
+    }
+    
+    // Piece is free to move there without capture
+    piece->setPosition(move);
+
+
+    bool isKingStillInCheck = isKingInCheck(kingColor, pieces);
+
+    // Restore to original position
+    piece->setPosition(originalPosition);
+    if (capturedPiece)
+    {
+        pieces.push_back(capturedPiece);
+    }
+
+    // Return whether the king is still in check after the move
+    return isKingStillInCheck;
 }
 
 
