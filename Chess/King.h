@@ -9,6 +9,7 @@
 class King : public Piece
 {
 public:
+	bool hasMoved;
 	// Constructor
 	King(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture);
 
@@ -22,3 +23,4 @@ public:
 };
 
 #endif // KING_H
+#pragma once

@@ -3,7 +3,7 @@
 
 // Constructor
 King::King(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture)
-	: Piece(color, position, texture) {}
+	: Piece(color, position, texture), hasMoved(false) {}
 
 // Overriden draw function
 void King::draw(sf::RenderWindow& window)
@@ -30,24 +30,24 @@ void King::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 	// Iterating over each direction
 	for (const auto& direction : directions) {
 		sf::Vector2f nextPosition = currentPosition + direction;
-		
-			if (board.isEmptySquare(pieces, nextPosition)) // Empty square, piece can move
-			{
-				possibleMoves.push_back(nextPosition);
-			}
-			else if (board.isOpponentPiece(nextPosition, pieces, this->getColor())) // Enemy piece, capture
-			{
-				possibleMoves.push_back(nextPosition);
-				break; // Stop after capturing
-			}
-			else
-			{
-				break; // Stop if friendly piece
-			}
 
-		
+		if (board.isEmptySquare(pieces, nextPosition)) // Empty square, piece can move
+		{
+			possibleMoves.push_back(nextPosition);
+		}
+		else if (board.isOpponentPiece(nextPosition, pieces, this->getColor())) // Enemy piece, capture
+		{
+			possibleMoves.push_back(nextPosition);
+			break; // Stop after capturing
+		}
+		else
+		{
+			break; // Stop if friendly piece
+		}
+
+
 	}
 
-	
+
 }
 

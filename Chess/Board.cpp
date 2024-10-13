@@ -2,9 +2,10 @@
 #include "iostream"
 #include "Pawn.h"
 #include "King.h"
+#include "Rook.h"
 
 Board::Board(int squareSize)
-    : squareSize(squareSize), turn(true), enPassantTarget(-1,-1) {
+    : squareSize(squareSize), turn(true), enPassantTarget(-1, -1) {
 
     for (int row = 0; row < BOARD_SIZE; ++row) {
         for (int col = 0; col < BOARD_SIZE; ++col) {
@@ -13,8 +14,6 @@ Board::Board(int squareSize)
 
             // Color the board
             colorSquares();
-
-
         }
     }
 
@@ -51,7 +50,7 @@ bool Board::isOpponentPiece(const sf::Vector2f& position, const std::vector<Piec
             return true;
         }
     }
-   return false;
+    return false;
 }
 
 bool Board::isEmptySquare(const std::vector<Piece*>& pieces, const sf::Vector2f& position)
@@ -181,6 +180,7 @@ sf::Vector2f Board::getEnPassantTarget() const
     return enPassantTarget;
 }
 
+
 Piece* Board::findKing(const std::string& kingColor, const std::vector<Piece*>& pieces)
 {
     for (Piece* piece : pieces)
@@ -247,6 +247,11 @@ bool Board::isCheckmate(const std::string& kingColor, const std::vector<Piece*>&
         }
     }
 
+    if (!simulateCastleMove(kingColor, pieces))
+    {
+        return false; // Castling removes the check
+    }
+
     return true; // No possible move to remove the check hence its mate and the game is over
 }
 
@@ -273,7 +278,7 @@ bool Board::simulateMove(const sf::Vector2f& move, const std::string& kingColor,
         }
 
     }
-    
+
     // Piece is free to move there without capture
     piece->setPosition(move);
 
@@ -289,6 +294,276 @@ bool Board::simulateMove(const sf::Vector2f& move, const std::string& kingColor,
 
     // Return whether the king is still in check after the move
     return isKingStillInCheck;
+}
+
+bool Board::simulateCastleMove(const std::string& kingColor, std::vector<Piece*> pieces)
+{
+    bool checkKingSide = true;
+    bool checkQueenSide = true;
+    // Check for king side
+    if (canCastleKingSide(kingColor, pieces))
+    {
+        sf::Vector2f originalKingPosition = findKing(kingColor, pieces)->getPosition();
+        sf::Vector2f originalRookPosition = sf::Vector2f(7 * squareSize, originalKingPosition.y);
+
+        // Move the pieces
+        Piece* rook = getPieceAtPosition(originalRookPosition, pieces);
+        rook->setPosition(sf::Vector2f(5 * squareSize, originalRookPosition.y));
+        Piece* king = findKing(kingColor, pieces);
+        king->setPosition(sf::Vector2f(6 * squareSize, originalKingPosition.y));
+        checkKingSide = isKingInCheck(kingColor, pieces);
+    }
+    // Check for queen side
+    if (canCastleQueenSide(kingColor, pieces))
+    {
+        sf::Vector2f originalKingPosition = findKing(kingColor, pieces)->getPosition();
+        sf::Vector2f originalRookPosition = sf::Vector2f(0, originalKingPosition.y);
+
+        // Move the pieces
+        Piece* rook = getPieceAtPosition(originalRookPosition, pieces);
+        rook->setPosition(sf::Vector2f(3 * squareSize, originalRookPosition.y));
+        Piece* king = findKing(kingColor, pieces);
+        king->setPosition(sf::Vector2f(2 * squareSize, originalKingPosition.y));
+        checkQueenSide = isKingInCheck(kingColor, pieces);
+
+    }
+    return (checkKingSide && checkQueenSide);
+}
+
+bool Board::isKingSide(const std::string& kingColor, const std::vector<Piece*>& pieces)
+{
+    if (kingColor == "white")
+    {
+        // Check for white kingside
+        Piece* rook = getPieceAtPosition(sf::Vector2f(7 * squareSize, 7 * squareSize), pieces);
+        if (rook && dynamic_cast<Rook*>(rook) && dynamic_cast<Rook*>(rook)->hasMoved == false)
+        {
+            // Rook kingside
+            return true;
+        }
+    }
+    else if (kingColor == "black")
+    {
+        // Check for black kingside
+        Piece* rook = getPieceAtPosition(sf::Vector2f(7 * squareSize, 0), pieces);
+        if (rook && dynamic_cast<Rook*>(rook) && dynamic_cast<Rook*>(rook)->hasMoved == false)
+        {
+            // Rook kingside
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Board::isQueenSide(const std::string& kingColor, const std::vector<Piece*>& pieces)
+{
+    if (kingColor == "white")
+    {
+        // Check for white queen side
+        Piece* rook = getPieceAtPosition(sf::Vector2f(0, 7 * squareSize), pieces);
+        if (rook && dynamic_cast<Rook*>(rook) && dynamic_cast<Rook*>(rook)->hasMoved == false)
+        {
+            // Rook queen side
+            return true;
+        }
+    }
+    else if (kingColor == "black")
+    {
+        // Check for black queen side
+        Piece* rook = getPieceAtPosition(sf::Vector2f(0, 0), pieces);
+        if (rook && dynamic_cast<Rook*>(rook) && dynamic_cast<Rook*>(rook)->hasMoved == false)
+        {
+            // Rook queen side
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Board::canCastleKingSide(const std::string& kingColor, const std::vector<Piece*>& pieces)
+{
+    // Find the king
+    Piece* king = findKing(kingColor, pieces);
+
+    // Check if the king hasn't moved
+    if (king && dynamic_cast<King*>(king)->hasMoved == false)
+    {
+        return false;
+    }
+
+    // Check for king side white side
+    if (isKingSide(kingColor, pieces) && kingColor == "white")
+    {
+        // Check empty squares between
+        std::vector<sf::Vector2f> squaresBetween;
+        squaresBetween.push_back(sf::Vector2f(5 * squareSize, 7 * squareSize));
+        squaresBetween.push_back(sf::Vector2f(6 * squareSize, 7 * squareSize));
+        for (const auto& square : squaresBetween)
+        {
+            if (!isEmptySquare(pieces, square))
+            {
+                return false; // Cant castle because piece inbetween rook and king
+            }
+        }
+
+        // Check if the king/squares he has to move through are under attack
+        squaresBetween.push_back(findKing("white",pieces)->getPosition());
+        std::vector<sf::Vector2f> possibleMoves;
+        for (const auto& piece : pieces)
+        {
+            if (piece->getColor() != kingColor)
+            {
+                piece->getPossibleMoves(*this, pieces, possibleMoves);
+                for (const auto& move : possibleMoves)
+                {
+                    for (const auto& square : squaresBetween)
+                    {
+                        if (square == move)
+                        {
+                            // Square/king are attacked
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Check for king side black side
+
+    if (isKingSide(kingColor, pieces) && kingColor == "black")
+    {
+        // Check empty squares between
+        std::vector<sf::Vector2f> squaresBetween;
+        squaresBetween.push_back(sf::Vector2f(5 * squareSize, 0));
+        squaresBetween.push_back(sf::Vector2f(6 * squareSize, 0));
+        for (const auto& square : squaresBetween)
+        {
+            if (!isEmptySquare(pieces, square))
+            {
+                return false; // Cant castle because piece inbetween rook and king
+            }
+        }
+
+        // Check if the king/squares he has to move through are under attack
+        squaresBetween.push_back(findKing("black", pieces)->getPosition());
+        std::vector<sf::Vector2f> possibleMoves;
+        for (const auto& piece : pieces)
+        {
+            if (piece->getColor() != kingColor)
+            {
+                piece->getPossibleMoves(*this, pieces, possibleMoves);
+                for (const auto& move : possibleMoves)
+                {
+                    for (const auto& square : squaresBetween)
+                    {
+                        if (square == move)
+                        {
+                            // Square/king are attacked
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // If none of the squares are attacked, king isnt attacked (checked), the squares between the king and the rook are empty,
+    // and they both didn't move we can conclude that we can do a kingside castle
+    return true;
+
+}
+
+bool Board::canCastleQueenSide(const std::string& kingColor, const std::vector<Piece*>& pieces)
+{
+    // Find the king
+    Piece* king = findKing(kingColor, pieces);
+
+    // Check if the king hasn't moved
+    if (king && dynamic_cast<King*>(king)->hasMoved == false)
+    {
+        return false;
+    }
+
+    // Check for queen side white side
+    if (isQueenSide(kingColor, pieces) && kingColor == "white")
+    {
+        // Check empty squares between
+        std::vector<sf::Vector2f> squaresBetween;
+        squaresBetween.push_back(sf::Vector2f(1 * squareSize, 7 * squareSize));
+        squaresBetween.push_back(sf::Vector2f(2 * squareSize, 7 * squareSize));
+        squaresBetween.push_back(sf::Vector2f(3 * squareSize, 7 * squareSize));
+        for (const auto& square : squaresBetween)
+        {
+            if (!isEmptySquare(pieces, square))
+            {
+                return false; // Cant castle because piece inbetween rook and king
+            }
+        }
+
+        // Check if the king/squares he has to move through are under attack
+        squaresBetween.push_back(findKing("white", pieces)->getPosition());
+        std::vector<sf::Vector2f> possibleMoves;
+        for (const auto& piece : pieces)
+        {
+            if (piece->getColor() != kingColor)
+            {
+                piece->getPossibleMoves(*this, pieces, possibleMoves);
+                for (const auto& move : possibleMoves)
+                {
+                    for (const auto& square : squaresBetween)
+                    {
+                        if (square == move)
+                        {
+                            // Square/king are attacked
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Check for queen side black side
+    if (isQueenSide(kingColor, pieces) && kingColor == "black")
+    {
+        // Check empty squares between
+        std::vector<sf::Vector2f> squaresBetween;
+        squaresBetween.push_back(sf::Vector2f(1 * squareSize, 0));
+        squaresBetween.push_back(sf::Vector2f(2 * squareSize, 0));
+        squaresBetween.push_back(sf::Vector2f(3 * squareSize, 0));
+        for (const auto& square : squaresBetween)
+        {
+            if (!isEmptySquare(pieces, square))
+            {
+                return false; // Cant castle because piece inbetween rook and king
+            }
+        }
+
+        // Check if the king/squares he has to move through are under attack
+        squaresBetween.push_back(findKing("black", pieces)->getPosition());
+        std::vector<sf::Vector2f> possibleMoves;
+        for (const auto& piece : pieces)
+        {
+            if (piece->getColor() != kingColor)
+            {
+                piece->getPossibleMoves(*this, pieces, possibleMoves);
+                for (const auto& move : possibleMoves)
+                {
+                    for (const auto& square : squaresBetween)
+                    {
+                        if (square == move)
+                        {
+                            // Square/king are attacked
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // If none of the squares are attacked, king isnt attacked (checked), the squares between the king and the rook are empty,
+    // and they both didn't move we can conclude that we can do a kingside castle
+    return true;
 }
 
 

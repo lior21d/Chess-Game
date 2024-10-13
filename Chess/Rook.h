@@ -8,6 +8,7 @@
 class Rook : public Piece
 {
 public:
+	bool hasMoved;
 	// Constructor
 	Rook(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture);
 

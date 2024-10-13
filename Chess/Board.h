@@ -34,10 +34,17 @@ public:
     bool isKingInCheck(const std::string& kingColor, const std::vector<Piece*>& pieces);
     bool isCheckmate(const std::string& kingColor, const std::vector<Piece*>& pieces);
     bool simulateMove(const sf::Vector2f& move, const std::string& kingColor, std::vector<Piece*> pieces, Piece* piece);
+    bool simulateCastleMove(const std::string& kingColor, std::vector<Piece*> pieces);
 
     // En passant 
     void updateEnPassantTarget(Piece* pawn, const sf::Vector2f& start, const sf::Vector2f& finish);
     sf::Vector2f getEnPassantTarget() const;
+
+    // Castling
+    bool isKingSide(const std::string& kingColor, const std::vector<Piece*>& pieces);
+    bool isQueenSide(const std::string& kingColor, const std::vector<Piece*>& pieces);
+    bool canCastleKingSide(const std::string& kingColor, const std::vector<Piece*>& pieces);
+    bool canCastleQueenSide(const std::string& kingColor, const std::vector<Piece*>& pieces);
 
 private:
     static const int BOARD_SIZE = 8;
@@ -49,3 +56,4 @@ private:
 
 #endif // BOARD_H
 
+#pragma once

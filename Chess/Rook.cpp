@@ -4,7 +4,7 @@
 
 // Constructor
 Rook::Rook(const std::string& color, const sf::Vector2f& position, const sf::Texture& texture)
-	: Piece(color, position, texture) {}
+	: Piece(color, position, texture) , hasMoved(false) {}
 
 // Overriden draw function
 void Rook::draw(sf::RenderWindow& window)

@@ -1,6 +1,8 @@
 #include "Window.h"
 #include <iostream>
 #include "Pawn.h"
+#include "Rook.h"
+#include "King.h"
 Window::Window(const std::string& title, int width, int height)
     : title(title), width(width), height(height) {}
 
@@ -108,6 +110,9 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                             capturedPiece = nullptr;
                         }
                     }
+                    // Check if castle was made
+                    // @ To do: implement castling, tidy up en passant and castling make them functions
+
 
                     // Check for capture, if there is capturing, remove captured piece
                     
