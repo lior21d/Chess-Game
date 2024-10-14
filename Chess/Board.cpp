@@ -386,7 +386,7 @@ bool Board::canCastleKingSide(const std::string& kingColor, const std::vector<Pi
     Piece* king = findKing(kingColor, pieces);
 
     // Check if the king hasn't moved
-    if (king && dynamic_cast<King*>(king)->hasMoved == false)
+    if (king && dynamic_cast<King*>(king)->hasMoved == true)
     {
         return false;
     }
@@ -479,7 +479,7 @@ bool Board::canCastleQueenSide(const std::string& kingColor, const std::vector<P
     Piece* king = findKing(kingColor, pieces);
 
     // Check if the king hasn't moved
-    if (king && dynamic_cast<King*>(king)->hasMoved == false)
+    if (king && dynamic_cast<King*>(king)->hasMoved == true)
     {
         return false;
     }

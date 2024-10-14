@@ -17,6 +17,11 @@ public:
     sf::RenderWindow& getRenderWindow();
     std::vector<sf::Vector2f> possibleMoves;
 
+    // Movement helper functions
+    bool enPassantMove(Piece* selectedPiece, Board& board, Piece* capturedPiece, std::vector<Piece*>& pieces);
+    bool castleMove(Piece* selectedPiece, Board& board, Piece* capturedPiece, std::vector<Piece*>& pieces);
+    void capture(Piece* selectedPiece, Piece* capturedPiece, Board& board, sf::Vector2f& newPiecePos, std::vector<Piece*>& pieces);
+
 private:
     sf::RenderWindow window;
     std::string title;
