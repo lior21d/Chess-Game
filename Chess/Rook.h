@@ -19,7 +19,7 @@ public:
 
 	void getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std::vector<sf::Vector2f>& possibleMoves) override;
 
-	void setFirstMove(bool flag);
+	void setHasMoved(bool flag);
 };
 
 #endif // ROOK_H

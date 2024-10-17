@@ -167,12 +167,16 @@ bool Window::castleMove(Piece* selectedPiece, Piece* capturedPiece, Board& board
         {
             selectedPiece->setPosition(sf::Vector2f(6 * board.getSquareSize(), capturedPiece->getPosition().y));
             capturedPiece->setPosition(sf::Vector2f(5 * board.getSquareSize(), capturedPiece->getPosition().y));
+            updateRookFirstMove(capturedPiece);
+            updateKingFirstMove(selectedPiece);
             return true;
         }
         else if (capturedPiece->getPosition().x < originalPos.x && board.canCastleQueenSide(selectedPiece->getColor(), pieces))
         {
             selectedPiece->setPosition(sf::Vector2f(2 * board.getSquareSize(), capturedPiece->getPosition().y));
             capturedPiece->setPosition(sf::Vector2f(3 * board.getSquareSize(), capturedPiece->getPosition().y));
+            updateRookFirstMove(capturedPiece);
+            updateKingFirstMove(selectedPiece);
             return true;
         }
     }
@@ -204,7 +208,7 @@ void Window::updateRookFirstMove(Piece* selectedPiece)
 {
     if (dynamic_cast<Rook*>(selectedPiece))
     {
-        dynamic_cast<Rook*>(selectedPiece)->setFirstMove(false);
+        dynamic_cast<Rook*>(selectedPiece)->setHasMoved(true);
     }
 }
 
@@ -212,7 +216,7 @@ void Window::updateKingFirstMove(Piece* selectedPiece)
 {
     if (dynamic_cast<King*>(selectedPiece))
     {
-        dynamic_cast<King*>(selectedPiece)->setFirstMove(false);
+        dynamic_cast<King*>(selectedPiece)->setHasMoved(true);
     }
 }
 

@@ -62,9 +62,9 @@ void King::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 	
 }
 
-void King::setFirstMove(bool flag)
+void King::setHasMoved(bool flag)
 {
-	hasMoved = false;
+	hasMoved = flag;
 }
 
 
