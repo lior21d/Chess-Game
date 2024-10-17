@@ -19,9 +19,11 @@ public:
 
     // Movement helper functions
     bool enPassantMove(Piece* selectedPiece, Board& board, Piece* capturedPiece, std::vector<Piece*>& pieces);
-    bool castleMove(Piece* selectedPiece, Piece* capturedPiece, Board& board, sf::Vector2f& originalPos);
+    bool castleMove(Piece* selectedPiece, Piece* capturedPiece, Board& board, sf::Vector2f& originalPos, std::vector<Piece*>& pieces);
     void capture(Piece* selectedPiece, Piece* capturedPiece, Board& board, sf::Vector2f& newPiecePos, std::vector<Piece*>& pieces);
-
+    void updatePawnFirstMove(Piece* selectedPiece);
+    void updateRookFirstMove(Piece* selectedPiece);
+    void updateKingFirstMove(Piece* selectedPiece);
 private:
     sf::RenderWindow window;
     std::string title;

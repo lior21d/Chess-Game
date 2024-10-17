@@ -93,7 +93,7 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                     
                     capturedPiece = board.getPieceAtPosition(newPiecePos, pieces);
                     // Check for castle
-                    if (castleMove(selectedPiece, capturedPiece, board, originalPos));
+                    if (castleMove(selectedPiece, capturedPiece, board, originalPos, pieces));
                     else {
                         selectedPiece->setPosition(newPiecePos);
 
@@ -109,11 +109,10 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                     // Check for new possible En passant target
                     board.updateEnPassantTarget(selectedPiece, originalPos, newPiecePos);
 
-                    // Update pawn's first move property
-                    if (dynamic_cast<Pawn*>(selectedPiece))
-                    {
-                        dynamic_cast<Pawn*>(selectedPiece)->setFirstMove(false);
-                    }
+                    // Update first move property
+                    updatePawnFirstMove(selectedPiece);
+                    updateKingFirstMove(selectedPiece);
+                    updateRookFirstMove(selectedPiece);
                     selectedPiece = nullptr;
                         
                     // Make others player turn
@@ -157,19 +156,20 @@ bool Window::enPassantMove(Piece* selectedPiece, Board& board, Piece* capturedPi
     return false;
 }
 
-bool Window::castleMove(Piece* selectedPiece, Piece* capturedPiece, Board& board, sf::Vector2f& originalPos)
+bool Window::castleMove(Piece* selectedPiece, Piece* capturedPiece, Board& board, sf::Vector2f& originalPos, std::vector<Piece*>& pieces)
 {
+    
     if (dynamic_cast<King*>(selectedPiece) && dynamic_cast<Rook*>(capturedPiece) && selectedPiece->getColor() == capturedPiece->getColor())
     {
         // Castled
         // Check which side
-        if (capturedPiece->getPosition().x > originalPos.x)
+        if (capturedPiece->getPosition().x > originalPos.x && board.canCastleKingSide(selectedPiece->getColor(), pieces))
         {
             selectedPiece->setPosition(sf::Vector2f(6 * board.getSquareSize(), capturedPiece->getPosition().y));
             capturedPiece->setPosition(sf::Vector2f(5 * board.getSquareSize(), capturedPiece->getPosition().y));
             return true;
         }
-        else if (capturedPiece->getPosition().x < originalPos.x)
+        else if (capturedPiece->getPosition().x < originalPos.x && board.canCastleQueenSide(selectedPiece->getColor(), pieces))
         {
             selectedPiece->setPosition(sf::Vector2f(2 * board.getSquareSize(), capturedPiece->getPosition().y));
             capturedPiece->setPosition(sf::Vector2f(3 * board.getSquareSize(), capturedPiece->getPosition().y));
@@ -190,6 +190,30 @@ void Window::capture(Piece* selectedPiece, Piece* capturedPiece, Board& board, s
         
     }
 
+}
+
+void Window::updatePawnFirstMove(Piece* selectedPiece)
+{
+    if (dynamic_cast<Pawn*>(selectedPiece))
+    {
+        dynamic_cast<Pawn*>(selectedPiece)->setFirstMove(false);
+    }
+}
+
+void Window::updateRookFirstMove(Piece* selectedPiece)
+{
+    if (dynamic_cast<Rook*>(selectedPiece))
+    {
+        dynamic_cast<Rook*>(selectedPiece)->setFirstMove(false);
+    }
+}
+
+void Window::updateKingFirstMove(Piece* selectedPiece)
+{
+    if (dynamic_cast<King*>(selectedPiece))
+    {
+        dynamic_cast<King*>(selectedPiece)->setFirstMove(false);
+    }
 }
 
 

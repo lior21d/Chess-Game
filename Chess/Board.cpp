@@ -97,11 +97,11 @@ void Board::showAvailableSquares(const std::vector<sf::Vector2f>& possibleMoves)
     // Color all available squares
     const sf::Color availableColor = sf::Color(178, 199, 148, 255);
     for (const auto& pos : possibleMoves) {
-        if (squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].getFillColor() == sf::Color(118, 150, 86, 255)) // Green
+        if (squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].getFillColor() == sf::Color(118, 150, 86, 255) && isWithinBounds(pos)) // Green
         {
             squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].setFillColor(sf::Color(118, 150, 86, 190));
         }
-        else if (squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].getFillColor() == sf::Color(238, 238, 210, 255)) // White
+        else if (squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].getFillColor() == sf::Color(238, 238, 210, 255) && isWithinBounds(pos)) // White
         {
             squares[static_cast<int>(pos.y) / squareSize][static_cast<int>(pos.x) / squareSize].setFillColor(sf::Color(238, 238, 210, 190));
         }

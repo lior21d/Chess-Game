@@ -51,3 +51,8 @@ void Rook::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 	
 }
 
+void Rook::setFirstMove(bool flag)
+{
+	this->hasMoved = false;
+}
+
