@@ -19,7 +19,7 @@ public:
 
     // Movement helper functions
     bool enPassantMove(Piece* selectedPiece, Board& board, Piece* capturedPiece, std::vector<Piece*>& pieces);
-    bool castleMove(Piece* selectedPiece, Board& board, Piece* capturedPiece, std::vector<Piece*>& pieces);
+    bool castleMove(Piece* selectedPiece, Piece* capturedPiece, Board& board, sf::Vector2f& originalPos);
     void capture(Piece* selectedPiece, Piece* capturedPiece, Board& board, sf::Vector2f& newPiecePos, std::vector<Piece*>& pieces);
 
 private:

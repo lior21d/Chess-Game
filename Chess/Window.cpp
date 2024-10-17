@@ -85,41 +85,27 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
             if (!isDragging && selectedPiece) {
                
                 sf::Vector2f newPiecePos = board.getClosestSquare(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
-                // Check if move was a castle
-                if (board.isWithinBounds(newPiecePos) && dynamic_cast<King*>(selectedPiece))
-                {
-                    // Check if castle is possible
-                    Piece* king = selectedPiece;
-                    // Check if released on rook
-                    Piece* piece = board.getPieceAtPosition(newPiecePos, pieces);
-                    if (dynamic_cast<Rook*>(piece) && piece->getColor() == king->getColor())
-                    {
-                        castleMove(selectedPiece, board, piece, pieces);
-                    }
-                    selectedPiece = nullptr;
-                    piece = nullptr;
-                    // Make others player turn
-                    board.setTurn(!board.getTurn());
-                }
 
                 // Check if piece is able to move to new position
-                else if (board.isWithinBounds(newPiecePos) && board.isValidMove(possibleMoves, newPiecePos)) { // In bounds and possible
+               if (board.isWithinBounds(newPiecePos) && board.isValidMove(possibleMoves, newPiecePos)) { // In bounds and possible
                     
                     
-                    // Check for enPassant capture
+                    
                     capturedPiece = board.getPieceAtPosition(newPiecePos, pieces);
-                    
-                    selectedPiece->setPosition(newPiecePos);
+                    // Check for castle
+                    if (castleMove(selectedPiece, capturedPiece, board, originalPos));
+                    else {
+                        selectedPiece->setPosition(newPiecePos);
 
-                    // Check if en passant was made
-                    if (enPassantMove(selectedPiece, board, capturedPiece, pieces));
+                        // Check if en passant was made
+                        if (enPassantMove(selectedPiece, board, capturedPiece, pieces));
 
-                    // Check for capture, if there is capturing, remove captured piece
-                    else
-                    {
-                        capture(selectedPiece, capturedPiece, board, newPiecePos, pieces);
+                        // Check for capture, if there is capturing, remove captured piece
+                        else
+                        {
+                            capture(selectedPiece, capturedPiece, board, newPiecePos, pieces);
+                        }
                     }
-                    
                     // Check for new possible En passant target
                     board.updateEnPassantTarget(selectedPiece, originalPos, newPiecePos);
 
@@ -133,6 +119,8 @@ void Window::handleEvents(std::vector<Piece*>& pieces, Board& board)
                     // Make others player turn
                     board.setTurn(!board.getTurn());
                 }
+
+              
                 else {
                     selectedPiece->setPosition(originalPos);
                     selectedPiece = nullptr;
@@ -169,35 +157,28 @@ bool Window::enPassantMove(Piece* selectedPiece, Board& board, Piece* capturedPi
     return false;
 }
 
-bool Window::castleMove(Piece* selectedPiece, Board& board, Piece* capturedPiece, std::vector<Piece*>& pieces)
+bool Window::castleMove(Piece* selectedPiece, Piece* capturedPiece, Board& board, sf::Vector2f& originalPos)
 {
-    if (dynamic_cast<King*>(selectedPiece) && dynamic_cast<Rook*>(capturedPiece) && selectedPiece->getColor() == capturedPiece->getColor()) // Pieces are valid selectedPiece is king and capturedPiece is rook
+    if (dynamic_cast<King*>(selectedPiece) && dynamic_cast<Rook*>(capturedPiece) && selectedPiece->getColor() == capturedPiece->getColor())
     {
-        King* king = dynamic_cast<King*>(selectedPiece);
-        Rook* rook = dynamic_cast<Rook*>(capturedPiece);
-        std::string kingColor = selectedPiece->getColor();
-        
-        // Check if can castle king side
-        float y = (kingColor == "white") ? 7 : 0;
-        if(board.canCastleKingSide(kingColor, pieces))
+        // Castled
+        // Check which side
+        if (capturedPiece->getPosition().x > originalPos.x)
         {
-            king->setPosition(sf::Vector2f(6 * board.getSquareSize(), y * board.getSquareSize()));
-            rook->setPosition(sf::Vector2f(5 * board.getSquareSize(), y * board.getSquareSize()));
-            return true; // Castled
+            selectedPiece->setPosition(sf::Vector2f(6 * board.getSquareSize(), capturedPiece->getPosition().y));
+            capturedPiece->setPosition(sf::Vector2f(5 * board.getSquareSize(), capturedPiece->getPosition().y));
+            return true;
         }
-        // Check if can castle queen side
-        else if (board.canCastleQueenSide(kingColor, pieces))
+        else if (capturedPiece->getPosition().x < originalPos.x)
         {
-            king->setPosition(sf::Vector2f(2 * board.getSquareSize(), y * board.getSquareSize()));
-            rook->setPosition(sf::Vector2f(3 * board.getSquareSize(), y * board.getSquareSize()));
-            return true; // Castled
-        }
-        else
-        {
-            return false; // Cant castle
+            selectedPiece->setPosition(sf::Vector2f(2 * board.getSquareSize(), capturedPiece->getPosition().y));
+            capturedPiece->setPosition(sf::Vector2f(3 * board.getSquareSize(), capturedPiece->getPosition().y));
+            return true;
         }
     }
+    return false;
 }
+
 
 void Window::capture(Piece* selectedPiece, Piece* capturedPiece, Board& board, sf::Vector2f& newPiecePos, std::vector<Piece*>& pieces)
 {

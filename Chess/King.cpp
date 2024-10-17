@@ -48,6 +48,18 @@ void King::getPossibleMoves(Board& board, const std::vector<Piece*>& pieces, std
 
 	}
 
-
+	// Check for castle
+	if (board.canCastleKingSide(this->getColor(), pieces))
+	{
+		float y = (this->getColor() == "white") ? 7 : 0;
+		possibleMoves.push_back(sf::Vector2f(7 * board.getSquareSize(), y * board.getSquareSize()));
+	}
+	if (board.canCastleQueenSide(this->getColor(), pieces))
+	{
+		float y = (this->getColor() == "white") ? 7 : 0;
+		possibleMoves.push_back(sf::Vector2f(0, y * board.getSquareSize()));
+	}
+	
 }
+
 
